@@ -43,7 +43,7 @@ local function check_member_super(cb_extra, success, result)
       end
       data[tostring(groups)][tostring(msg.to.id)] = msg.to.id
       save_data(_config.moderation.data, data)
-	  local text = '#سوپرگروه اضافه شد!'
+	  local text = 'سوپرگروه اضافه شد!'
       return reply_msg(msg.id, text, ok_cb, false)
     end
   end
@@ -67,7 +67,7 @@ local function check_member_superrem(cb_extra, success, result)
       end
       data[tostring(groups)][tostring(msg.to.id)] = nil
       save_data(_config.moderation.data, data)
-	  local text = '#سوپرگروه حذف شد!'
+	  local text = 'سوپرگروه حذف شد!'
       return reply_msg(msg.id, text, ok_cb, false)
     end
   end
@@ -118,11 +118,11 @@ end
 
 --Get and output info about supergroup
 local function callback_info(cb_extra, success, result)
-local title ="مشخصات #سوپرگروه: ["..result.title.."]\n\n"
+local title ="مشخصات سوپرگروه: ["..result.title.."]\n\n"
 local admin_num = "تعداد ادمین: "..result.admins_count.."\n"
 local user_num = "تعداد اعضا: "..result.participants_count.."\n"
 local kicked_num = "تعداد اعضای مسدود: "..result.kicked_count.."\n"
-local channel_id = "#ایدی : "..result.peer_id.."\n"
+local channel_id = "ایدی : "..result.peer_id.."\n"
 if result.username then
 	channel_username = "یوزرنیم: @"..result.username
 else
@@ -163,7 +163,7 @@ end
 --Get and output list of kicked users for supergroup
 local function callback_kicked(cb_extra, success, result)
 --vardump(result)
-local text = "اعضای مسدود شده #سوپرگروه "..cb_extra.receiver.."\n\n"
+local text = "اعضای مسدود شده سوپرگروه "..cb_extra.receiver.."\n\n"
 local i = 1
 for k,v in pairsByKeys(result) do
 if not v.print_name then
@@ -224,11 +224,11 @@ local function lock_group_spam(msg, data, target)
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'yes' then
-    return 'ضداسپم #سوپرگروه فعال بود'
+    return 'ضداسپم سوپرگروه فعال بود'
   else
     data[tostring(target)]['settings']['lock_spam'] = 'yes'
     save_data(_config.moderation.data, data)
-    return 'ضداسپم #سوپرگروه فعال شد'
+    return 'ضداسپم سوپرگروه فعال شد'
   end
 end
 
@@ -238,11 +238,11 @@ local function unlock_group_spam(msg, data, target)
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'no' then
-    return 'ضداسپم #سوپرگروه غیرفعال بود'
+    return 'ضداسپم سوپرگروه غیرفعال بود'
   else
     data[tostring(target)]['settings']['lock_spam'] = 'no'
     save_data(_config.moderation.data, data)
-    return 'ضداسپم #سوپرگروه غیرفعال شد'
+    return 'ضداسپم سوپرگروه غیرفعال شد'
   end
 end
 
@@ -665,7 +665,7 @@ local function unset_public_membermod(msg, data, target)
 	save_data(_config.moderation.data, data)
   end
   if group_public_lock == 'no' then
-    return '#سوپرگروه عمومی نیست'
+    return 'سوپرگروه عمومی نیست'
   else
     data[tostring(target)]['settings']['public'] = 'no'
 	data[tostring(target)]['long_id'] = msg.to.long_id
@@ -709,7 +709,7 @@ end
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "⚙تنظیمات #سوپرگروه :\nقفل لینک : "..settings.lock_link.."\nقفل اسپم: "..settings.lock_spam.."\nقفل اموجی: "..settings.lock_emoji.."\nقفل تگ: "..settings.lock_tag.."\nقفل تبلیغات: "..settings.lock_ads.."\nقفل دستورات: "..settings.lock_command.."\nقفل انگلیسی: "..settings.lock_english.."\nقفل اعداد: "..settings.lock_number.."\nقفل فلود: "..settings.flood.."\nقفل اعضا: "..settings.lock_member.."\nقفل RTL: "..settings.lock_rtl.."\nقفل پیام سرویسی : "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nقفل مخاطب: "..settings.lock_contacts.."\nعمومی: "..settings.public.."\nتنظیمات سختگیرانه: "..settings.strict
+  local text = "⚙تنظیمات سوپرگروه :\nقفل لینک : "..settings.lock_link.."\nقفل اسپم: "..settings.lock_spam.."\nقفل اموجی: "..settings.lock_emoji.."\nقفل تگ: "..settings.lock_tag.."\nقفل تبلیغات: "..settings.lock_ads.."\nقفل دستورات: "..settings.lock_command.."\nقفل انگلیسی: "..settings.lock_english.."\nقفل اعداد: "..settings.lock_number.."\nقفل فلود: "..settings.flood.."\nقفل اعضا: "..settings.lock_member.."\nقفل RTL: "..settings.lock_rtl.."\nقفل پیام سرویسی : "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nقفل مخاطب: "..settings.lock_contacts.."\nعمومی: "..settings.public.."\nتنظیمات سختگیرانه: "..settings.strict
   return text
 end
 
@@ -745,7 +745,7 @@ local function promote2(receiver, member_username, user_id)
   local group = string.gsub(receiver, 'channel#id', '')
   local member_tag_username = string.gsub(member_username, '@', '(at)')
   if not data[group] then
-    return send_large_msg(receiver, '#سوپرگروه اضافه نشده.')
+    return send_large_msg(receiver, 'سوپرگروه اضافه نشده.')
   end
   if data[group]['moderators'][tostring(user_id)] then
     return send_large_msg(receiver, member_username..' یک مدیر است.')
@@ -773,7 +773,7 @@ local function modlist(msg)
   local data = load_data(_config.moderation.data)
   local groups = "groups"
   if not data[tostring(groups)][tostring(msg.to.id)] then
-    return '#سوپرگروه اضافه نشده.'
+    return 'سوپرگروه اضافه نشده.'
   end
   -- determine if table is empty
   if next(data[tostring(msg.to.id)]['moderators']) == nil then
@@ -1114,9 +1114,9 @@ local function in_channel_cb(cb_extra, success, result)
   local member = cb_extra.username
   local memberid = cb_extra.user_id
   if member then
-    text = 'کاربری @'..member..' در این #سوپرگروه وجود ندارد.'
+    text = 'کاربری @'..member..' در این سوپرگروه وجود ندارد.'
   else
-    text = 'کاربری ['..memberid..'] در این #سوپرگروه وجود ندارد.'
+    text = 'کاربری ['..memberid..'] در این سوپرگروه وجود ندارد.'
   end
 if get_cmd == "channel_block" then
   for k,v in pairs(result) do
@@ -1256,7 +1256,7 @@ local function run(msg, matches)
 			if not is_admin1(msg) then
 				return
 			end
-			return "هم اکنون #سوپرگروه است"
+			return "هم اکنون سوپرگروه است"
 		end
 	end
 	if msg.to.type == 'channel' then
@@ -1270,7 +1270,7 @@ local function run(msg, matches)
 				return
 			end
 			if is_super_group(msg) then
-				return reply_msg(msg.id, '#سوپرگروه افزوده شده است.', ok_cb, false)
+				return reply_msg(msg.id, 'سوپرگروه افزوده شده است.', ok_cb, false)
 			end
 			print("SuperGroup "..msg.to.print_name.."("..msg.to.id..") added")
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] added SuperGroup")
@@ -1281,7 +1281,7 @@ local function run(msg, matches)
 
 		if matches[1] == 'حذف_گروه' and is_admin1(msg) and not matches[2] then
 			if not is_super_group(msg) then
-				return reply_msg(msg.id, '#سوپرگروه افزوده نشده است.', ok_cb, false)
+				return reply_msg(msg.id, 'سوپرگروه افزوده نشده است.', ok_cb, false)
 			end
 			print("SuperGroup "..msg.to.print_name.."("..msg.to.id..") removed")
 			superrem(msg)
@@ -1314,7 +1314,7 @@ local function run(msg, matches)
 				return "مالکی نیست، به ادمین های ربات اطلاع دهید"
 			end
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] used /owner")
-			return "مالک #سوپرگروه ["..group_owner..']'
+			return "مالک سوپرگروه ["..group_owner..']'
 		end
 
 		if matches[1] == "لیست_مدیران" then
@@ -1412,7 +1412,7 @@ local function run(msg, matches)
 				resolve_username(username,  callbackres, cbres_extra)
 			else
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup ID")
-				return "ایدی #سوپرگروه " ..string.gsub(msg.to.print_name, "_", " ").. ":\n\n"..msg.to.id
+				return "ایدی سوپرگروه" ..string.gsub(msg.to.print_name, "_", " ").. ":\n\n"..msg.to.id
 			end
 		end
 
@@ -1427,7 +1427,7 @@ local function run(msg, matches)
 			local function callback_link (extra , success, result)
 			local receiver = get_receiver(msg)
 				if success == 0 then
-					send_large_msg(receiver, '*خطا: ناموفق بودن ربات هنگام دریافت لینک\nدلیل: صاحب اصلی #سوپرگروه نبودن\nاگر شما لینک را دارید با دستور #تنظیم_لینک آنرا تنظیم کنید')
+					send_large_msg(receiver, '*خطا: ناموفق بودن ربات هنگام دریافت لینک\nدلیل: صاحب اصلی سوپرگروه نبودن\nاگر شما لینک را دارید با دستور #تنظیم_لینک آنرا تنظیم کنید')
 					data[tostring(msg.to.id)]['settings']['set_link'] = nil
 					save_data(_config.moderation.data, data)
 				else
@@ -1697,9 +1697,9 @@ local function run(msg, matches)
 			local function ok_username_cb (extra, success, result)
 				local receiver = extra.receiver
 				if success == 1 then
-					send_large_msg(receiver, "یوزرنیم #سوپرگروه تنظیم شد.")
+					send_large_msg(receiver, "یوزرنیم سوپرگروه تنظیم شد.")
 				elseif success == 0 then
-					send_large_msg(receiver, "عملیات تنظیم یوزرنیم #سوپرگروه ناموفق بود.\nممکنه یوزرنیم گرفته شده باشد.\n\nنکته: برای یوزرنیم میتوانید از حروف a تا z و اعداد 0 تا 9 استفاده کنید\nحداقل تعداد کاراکتر ها 5 میباشد.")
+					send_large_msg(receiver, "عملیات تنظیم یوزرنیم سوپرگروه ناموفق بود.\nممکنه یوزرنیم گرفته شده باشد.\n\nنکته: برای یوزرنیم میتوانید از حروف a تا z و اعداد 0 تا 9 استفاده کنید\nحداقل تعداد کاراکتر ها 5 میباشد.")
 				end
 			end
 			local username = string.gsub(matches[2], '@', '')
@@ -1736,7 +1736,7 @@ local function run(msg, matches)
 			end
 			if matches[2] == 'لیست_مدیران' then
 				if next(data[tostring(msg.to.id)]['moderators']) == nil then
-					return 'هیچ مدیری(مدیرانی) در این #سوپرگروه نیست.'
+					return 'هیچ مدیری(مدیرانی) در این سوپرگروه نیست.'
 				end
 				for k,v in pairs(data[tostring(msg.to.id)]['moderators']) do
 					data[tostring(msg.to.id)]['moderators'][tostring(k)] = nil
@@ -1778,9 +1778,9 @@ local function run(msg, matches)
 				local function ok_username_cb (extra, success, result)
 					local receiver = extra.receiver
 					if success == 1 then
-						send_large_msg(receiver, "یوزرنیم #سوپرگروه برداشته شد.")
+						send_large_msg(receiver, "یوزرنیم سوپرگروه برداشته شد.")
 					elseif success == 0 then
-						send_large_msg(receiver, "عملیات برداشتن یوزرنیم #سوپرگروه با شکست مواجه شد.")
+						send_large_msg(receiver, "عملیات برداشتن یوزرنیم سوپرگروه با شکست مواجه شد.")
 					end
 				end
 				local username = ""
@@ -1952,7 +1952,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'صدا' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'صدا' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'صدا' فعال بود"
 				end
@@ -1962,7 +1962,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'عکس' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'عکس' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'عکس' فعال بود"
 				end
@@ -1972,7 +1972,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'فیلم' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'فیلم' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'فیلم' فعال بود"
 				end
@@ -1982,7 +1982,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'گیف' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'گیف' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'گیف' فعال بود"
 				end
@@ -1992,7 +1992,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'فایل' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'فایل' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'فایل' فعال بود"
 				end
@@ -2002,7 +2002,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا 'متن' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا 'متن' فعال شد و در صورت ارسال این محتوا، محتوا موردنظر از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به محتوا 'متن' فعال بود"
 				end
@@ -2012,7 +2012,7 @@ local function run(msg, matches)
 				if not is_muted(chat_id, msg_type..': yes') then
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] set SuperGroup to: mute "..msg_type)
 					mute(chat_id, msg_type)
-					return "حساسیت به محتوا تمام موارد فعال شد و در صورت ارسال هر محتوایی، تمام محتواها از #سوپرگروه حذف خواهد شد"
+					return "حساسیت به محتوا تمام موارد فعال شد و در صورت ارسال هر محتوایی، تمام محتواها از سوپرگروه حذف خواهد شد"
 				else
 					return "حساسیت به هر محتوایی فعال بود"
 				end
@@ -2148,7 +2148,7 @@ local function run(msg, matches)
 		end
 
 		if matches[1] == 'راهنما' and not is_owner(msg) then
-			text = "برای دیدن راهنما، لطفا دستور #راهنما_سوپرگروه را به پیوی @RadicalTG بفرستید"
+			text = "برای دیدن راهنمای ربات دستور /superhelp را به پی وی من ارسال کنید و یا در کانال من عضو شوید @TeleGold_Team "
 			reply_msg(msg.id, text, ok_cb, false)
 		elseif matches[1] == 'راهنما' and is_owner(msg) then
 			local name_log = user_print_name(msg.from)
