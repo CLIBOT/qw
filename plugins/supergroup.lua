@@ -18,19 +18,19 @@ local function check_member_super(cb_extra, success, result)
         set_owner = member_id ,
         settings = {
           set_name = string.gsub(msg.to.title, '_', ' '),
-		  lock_emoji = 'no',
-		  lock_ads = 'no',
-		  lock_english = 'no',
-		  lock_command = 'no',
-		  lock_tag = 'no',
 		  lock_link = "no",
-          flood = 'yes',
 		  lock_spam = 'yes',
-		  lock_sticker = 'no',
+		  lock_emoji = 'no',
+		  lock_tag = 'no',
+		  lock_ads = 'no',
+		  lock_command = 'no',
+		  lock_english = 'no',
+		  lock_number = 'no',
+		  flood = 'yes',
 		  member = 'no',
-		  public = 'no',
 		  lock_rtl = 'no',
 		  lock_tgservice = 'no',
+		  lock_sticker = 'no',
 		  lock_contacts = 'no',
 		  strict = 'no'
         }
@@ -709,7 +709,7 @@ end
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "⚙تنظیمات #سوپرگروه :\nقفل تگ: "..settings.lock_tag.."\nقفل تبلیغات: "..settings.lock_ads.."\nقفل اعداد: "..settings.lock_number.."\nقفل انگلیسی: "..settings.lock_english.."\nقفل اموجی: "..settings.lock_emoji.."\nقفل دستورات: "..settings.lock_command.."\nقفل لینک : "..settings.lock_link.."\nقفل فلود: "..settings.flood.."\nحساسیت ضداسپم : "..NUM_MSG_MAX.."\nقفل اسپم: "..settings.lock_spam.."\nقفل اعضا: "..settings.lock_member.."\nقفل RTL: "..settings.lock_rtl.."\nقفل پیام سرویسی : "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nعمومی: "..settings.public.."\nتنظیمات سختگیرانه: "..settings.strict
+  local text = "⚙تنظیمات #سوپرگروه :\nقفل لینک : "..settings.lock_link.."\nقفل اسپم: "..settings.lock_spam.."\nقفل اموجی: "..settings.lock_emoji.."\nقفل تگ: "..settings.lock_tag.."\nقفل تبلیغات: "..settings.lock_ads.."\nقفل دستورات: "..settings.lock_command.."\nقفل انگلیسی: "..settings.lock_english.."\nقفل اعداد: "..settings.lock_number.."\nقفل فلود: "..settings.flood.."\nقفل اعضا: "..settings.lock_member.."\nقفل RTL: "..settings.lock_rtl.."\nقفل پیام سرویسی : "..settings.lock_tgservice.."\nقفل استیکر: "..settings.lock_sticker.."\nقفل مخاطب: "..settings.lock_contacts.."\nعمومی: "..settings.public.."\nتنظیمات سختگیرانه: "..settings.strict
   return text
 end
 
@@ -1244,7 +1244,7 @@ end
 --Run function
 local function run(msg, matches)
 	if msg.to.type == 'chat' then
-		if matches[1] == 'تبدیل به سوپرگروه' then
+		if matches[1] == 'تبدیل_به_سوپرگروه' then
 			if not is_admin1(msg) then
 				return
 			end
@@ -2148,7 +2148,7 @@ local function run(msg, matches)
 		end
 
 		if matches[1] == 'راهنما' and not is_owner(msg) then
-			text = "برای دیدن راهنما، لطفا دستور #راهنما_سوپرگروه را به پیوی @TeleGold بفرستید"
+			text = "برای دیدن راهنما، لطفا دستور #راهنما_سوپرگروه را به پیوی @RadicalTG بفرستید"
 			reply_msg(msg.id, text, ok_cb, false)
 		elseif matches[1] == 'راهنما' and is_owner(msg) then
 			local name_log = user_print_name(msg.from)
