@@ -13,11 +13,46 @@ local function set_bot_photo(msg, success, result)
     send_large_msg(receiver, 'Failed, please try again!', ok_cb, false)
   end
 end
+
+--Function to add log supergroup
+local function logadd(msg)
+	local data = load_data(_config.moderation.data)
+	local receiver = get_receiver(msg)
+	local GBan_log = 'GBan_log'
+   	if not data[tostring(GBan_log)] then
+		data[tostring(GBan_log)] = {}
+		save_data(_config.moderation.data, data)
+	end
+	data[tostring(GBan_log)][tostring(msg.to.id)] = msg.to.peer_id
+	save_data(_config.moderation.data, data)
+	local text = 'Log_SuperGroup has has been set!'
+	reply_msg(msg.id,text,ok_cb,false)
+	return
+end
+
+--Function to remove log supergroup
+local function logrem(msg)
+	local data = load_data(_config.moderation.data)
+    local receiver = get_receiver(msg)
+	local GBan_log = 'GBan_log'
+	if not data[tostring(GBan_log)] then
+		data[tostring(GBan_log)] = nil
+		save_data(_config.moderation.data, data)
+	end
+	data[tostring(GBan_log)][tostring(msg.to.id)] = nil
+	save_data(_config.moderation.data, data)
+	local text = 'Log_SuperGroup has has been removed!'
+	reply_msg(msg.id,text,ok_cb,false)
+	return
+end
+
+
 local function parsed_url(link)
   local parsed_link = URL.parse(link)
   local parsed_path = URL.parse_path(parsed_link.path)
   return parsed_path[2]
 end
+
 local function get_contact_list_callback (cb_extra, success, result)
   local text = " "
   for k,v in pairs(result) do
@@ -36,27 +71,10 @@ local function get_contact_list_callback (cb_extra, success, result)
   file:close()
   send_document("user#id"..cb_extra.target,"contact_list.json", ok_cb, false)--json format
 end
-local function user_info_callback(cb_extra, success, result)
-  result.access_hash = nil
-  result.flags = nil
-  result.phone = nil
-  if result.username then
-    result.username = '@'..result.username
-  end
-  result.print_name = result.print_name:gsub("_","")
-  local text = serpent.block(result, {comment=false})
-  text = text:gsub("[{}]", "")
-  text = text:gsub('"', "")
-  text = text:gsub(",","")
-  if cb_extra.msg.to.type == "chat" then
-    send_large_msg("chat#id"..cb_extra.msg.to.id, text)
-  else
-    send_large_msg("user#id"..cb_extra.msg.to.id, text)
-  end
-end
+
 local function get_dialog_list_callback(cb_extra, success, result)
   local text = ""
-  for k,v in pairs(result) do
+  for k,v in pairsByKeys(result) do
     if v.peer then
       if v.peer.type == "chat" then
         text = text.."group{"..v.peer.title.."}["..v.peer.id.."]("..v.peer.members_num..")"
@@ -105,12 +123,40 @@ local function get_dialog_list_callback(cb_extra, success, result)
   file:close()
   send_document("user#id"..cb_extra.target,"dialog_list.json", ok_cb, false)--json format
 end
+
+-- Returns the key (index) in the config.enabled_plugins table
+local function plugin_enabled( name )
+  for k,v in pairs(_config.enabled_plugins) do
+    if name == v then
+      return k
+    end
+  end
+  -- If not found
+  return false
+end
+
+-- Returns true if file exists in plugins folder
+local function plugin_exists( name )
+  for k,v in pairs(plugins_names()) do
+    if name..'.lua' == v then
+      return true
+    end
+  end
+  return false
+end
+
+local function reload_plugins( )
+	plugins = {}
+  return load_plugins()
+end
+
 local function run(msg,matches)
-    local data = load_data(_config.moderation.data)
     local receiver = get_receiver(msg)
     local group = msg.to.id
-    if not is_admin(msg) then
-    	return
+	local print_name = user_print_name(msg.from):gsub("‮", "")
+	local name_log = print_name:gsub("_", " ")
+    if not is_admin1(msg) then
+    	return 
     end
     if msg.media then
       	if msg.media.type == 'photo' and redis:get("bot:photo") then
@@ -119,56 +165,84 @@ local function run(msg,matches)
       		end
       	end
     end
-    if matches[1] == "setbotphoto" then
+    if matches[1] == "تنظیم عکس ربات" then
     	redis:set("bot:photo", "waiting")
     	return 'Please send me bot photo now'
     end
-    if matches[1] == "markread" then
-    	if matches[2] == "on" then
+    if matches[1] == "تیک دوم" then
+    	if matches[2] == "روشن" then
     		redis:set("bot:markread", "on")
     		return "Mark read > on"
     	end
-    	if matches[2] == "off" then
+    	if matches[2] == "خاموش" then
     		redis:del("bot:markread")
     		return "Mark read > off"
     	end
     	return
     end
-    if matches[1] == "pm" then
-    	send_large_msg("user#id"..matches[2],matches[3])
-    	return "Msg sent"
+    if matches[1] == "پیوی" then
+    	local text = "Message From "..(msg.from.username or msg.from.last_name).."\n\nMessage : "..matches[3]
+    	send_large_msg("user#id"..matches[2],text)
+    	return "Message has been sent"
     end
-    if matches[1] == "block" then
+    
+    if matches[1] == "بلاک پیوی" then
     	if is_admin2(matches[2]) then
     		return "You can't block admins"
     	end
     	block_user("user#id"..matches[2],ok_cb,false)
     	return "User blocked"
     end
-    if matches[1] == "unblock" then
+    if matches[1] == "انبلاک پیوی" then
     	unblock_user("user#id"..matches[2],ok_cb,false)
     	return "User unblocked"
     end
-    if matches[1] == "import" then--join by group link
+    if matches[1] == "ورود به" then--join by group link
     	local hash = parsed_url(matches[2])
     	import_chat_link(hash,ok_cb,false)
     end
-    if matches[1] == "contactlist" then
+    if matches[1] == "لیست مخاطبین" then
+	    if not is_sudo(msg) then-- Sudo only
+    		return
+    	end
       get_contact_list(get_contact_list_callback, {target = msg.from.id})
       return "I've sent contact list with both json and text format to your private"
     end
-    if matches[1] == "addcontact" and matches[2] then    add_contact(matches[2],matches[3],matches[4],ok_cb,false)
-      return "Number "..matches[2].." add from contact list"
-    end
-    if matches[1] == "delcontact" then
+    if matches[1] == "حذف مخاطب" then
+	    if not is_sudo(msg) then-- Sudo only
+    		return
+    	end
       del_contact("user#id"..matches[2],ok_cb,false)
       return "User "..matches[2].." removed from contact list"
     end
-    if matches[1] == "dialoglist" then
-      get_dialog_list(get_dialog_list_callback, {target = msg.from.id})
-      return "I've sent dialog list with both json and text format to your private"
+    if matches[1] == "افزودن مخاطب" and is_sudo(msg) then
+    phone = matches[2]
+    first_name = matches[3]
+    last_name = matches[4]
+    add_contact(phone, first_name, last_name, ok_cb, false)
+   return "User With Phone +"..matches[2].." has been added"
+end
+ if matches[1] == "ارسال مخاطب" and is_sudo(msg) then
+    phone = matches[2]
+    first_name = matches[3]
+    last_name = matches[4]
+    send_contact(get_receiver(msg), phone, first_name, last_name, ok_cb, false)
+end
+ if matches[1] == "مخاطب من" and is_sudo(msg) then
+	if not msg.from.phone then
+		return "I must Have Your Phone Number!"
     end
-    if matches[1] == "whois" then
+    phone = msg.from.phone
+    first_name = (msg.from.first_name or msg.from.phone)
+    last_name = (msg.from.last_name or msg.from.id)
+    send_contact(get_receiver(msg), phone, first_name, last_name, ok_cb, false)
+end
+
+    if matches[1] == "لیست دیالوگ" then
+      get_dialog_list(get_dialog_list_callback, {target = msg.from.id})
+      return "I've sent a group dialog list with both json and text format to your private messages"
+    end
+    if matches[1] == "کیست" then
       user_info("user#id"..matches[2],user_info_callback,{msg=msg})
     end
     if matches[1] == "sync_gbans" then
@@ -179,31 +253,80 @@ local function run(msg,matches)
     	local SEED_gbans = http.request(url)
     	local jdat = json:decode(SEED_gbans)
     	for k,v in pairs(jdat) do
-  		redis:hset('user:'..v, 'print_name', k)
-  		banall_user(v)
+			redis:hset('user:'..v, 'print_name', k)
+			banall_user(v)
       		print(k, v.." Globally banned")
     	end
     end
+	if matches[1] == 'بارگذاری' then
+		receiver = get_receiver(msg)
+		reload_plugins(true)
+		post_msg(receiver, "Reloaded!", ok_cb, false)
+		return "Reloaded!"
+	end
+	--[[*For Debug*
+	if matches[1] == "vardumpmsg" and is_admin1(msg) then
+		local text = serpent.block(msg, {comment=false})
+		send_large_msg("channel#id"..msg.to.id, text)
+	end]]
+	if matches[1] == 'اپدیت ایدی' then
+		local data = load_data(_config.moderation.data)
+		local long_id = data[tostring(msg.to.id)]['long_id']
+		if not long_id then
+			data[tostring(msg.to.id)]['long_id'] = msg.to.peer_id 
+			save_data(_config.moderation.data, data)
+			return "Updated ID"
+		end
+	end
+	if matches[1] == 'افزودن گزارش' and not matches[2] then
+		if is_log_group(msg) then
+			return "Already a Log_SuperGroup"
+		end
+		print("Log_SuperGroup "..msg.to.title.."("..msg.to.id..") added")
+		savelog(msg.to.id, name_log.." ["..msg.from.id.."] added Log_SuperGroup")
+		logadd(msg)
+	end
+	if matches[1] == 'حذف گزارش' and not matches[2] then
+		if not is_log_group(msg) then
+			return "Not a Log_SuperGroup"
+		end
+		print("Log_SuperGroup "..msg.to.title.."("..msg.to.id..") removed")
+		savelog(msg.to.id, name_log.." ["..msg.from.id.."] added Log_SuperGroup")
+		logrem(msg)
+	end
     return
 end
+
+local function pre_process(msg)
+  if not msg.text and msg.media then
+    msg.text = '['..msg.media.type..']'
+  end
+  return msg
+end
+
 return {
   patterns = {
-	"^[!/](pm) (%d+) (.*)$",
-	"^[!/](import) (.*)$",
-	"^[!/](unblock) (%d+)$",
-	"^[!/](block) (%d+)$",
-	"^[!/](markread) (on)$",
-	"^[!/](markread) (off)$",
-	"^[!/](setbotphoto)$",
+	"^(پیوی) (%d+) (.*)$",
+	"^(ورود به) (.*)$",
+	"^(انبلاک پیوی) (%d+)$",
+	"^(بلاک پیوی) (%d+)$",
+	"^(تیک دوم) (روشن)$",
+	"^(تیک دوم) (خاموش)$",
+	"^(تنظیم عکس ربات)$",
+	"^(لیست مخاطبین)$",
+	"^(لیست دیالوگ)$",
+	"^(کیست)$",
+	"^(حذف مخاطب) (%d+)$",
+	"^(افزودن مخاطب) (.*) (.*) (.*)$", 
+	"^(ارسال مخاطب) (.*) (.*) (.*)$",
+	"^(مخاطب من)$",
+	"^(بارگذاری)$",
+	"^(اپدیت ایدی)$",
+	"^(sync_gbans)$",
+	"^(افزودن گزارش)$",
+	"^(حذف گزارش)$",
 	"%[(photo)%]",
-	"^[!/](contactlist)$",
-	"^[!/](dialoglist)$",
-	"^[!/](delcontact) (%d+)$",
-        "^[!/](addcontact) (.*) (.*) (.*)$",
-	"^[!/](whois) (%d+)$",
-	"^/(sync_gbans)$"--sync your global bans with seed
   },
   run = run,
+  pre_process = pre_process
 }
---By @imandaneshi :)
---https://github.com/SEEDTEAM/TeleSeed/blob/master/plugins/admin.lua
