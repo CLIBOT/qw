@@ -324,109 +324,63 @@ This command will send text to [group_id]
 
 ]],
     help_text = [[
-Commands list :
+🔅دستورات ربات تله گولد🔅
 
-!kick [username|id]
-You can also do it by reply
+♦️🔱ضداسپم🔱♦️
+🔱 #بن [ایدی|یوزرنیم] 👈 بن کردن یک کاربر با ایدی یا یوزرنیم آن
+🔱 #انبن [ایدی|یوزرنیم] 👈 انبن کردن یک کاربر
+🔱 #لیست_بن 👈 نمایش افراد بن
+🔱 #اخراجم_کن 👈 اخراج شما
+#بلاک [یوزرنیم|ایدی] 👈 بلاک کردن یک کاربر از سوپرگروه
 
-!ban [ username|id]
-You can also do it by reply
+🔷🔹مدیریت سوپرگروه🔹🔷
+🔱 #ترفیع [ایدی|یوزرنیم] 👈 ترفیع یک فرد به درجه مدیریت
+🔱 #عزل [ایدی|یوزرنیم] 👈 عزل یک فرد
+🔱 #تنظیم_عکس 👈 تنظیم عکس گروه
+🔱 #تنظیم اسم [اسم] 👈 تنظیم اسم گروه
+🔱 #لیست_مدیران 👈 لیست مدیران گروه
+🔱 #لینک_جدید 👈 ساخت لینک جدید
+🔱 #تنظیم_لینک 👈 تنظیم لینک موردنظر شما
+🔱 #لینک 👈 فرستادن لینک
+🔱 #امار 👈 نمایش امار گروه
+🔱 #راهنما_سوپرگروه 👈 لیست راهنما (لیست کنونی)
 
-!unban [id]
-You can also do it by reply
+🔱⚜اطلاعاتی سوپرگروه⚜🔱
+#اطلاعات 👈 نمایش اطلاعات
+#ادمین_ها 👈 نمایش لیست ادمین ها
+🔱 #مالک 👈 نمایش مالک
+#ربات_ها 👈 نمایش رباتها گروه
+🔱 #افراد 👈 لیست افراد
+#اخراج_شدگان 👈 نمایش افراد اخراج شده
+🔱 #ایدی 👈 نمایش ایدی
+🔱 #قوانین 👈 نمایش قوانین
 
-!who
-Members list
+🔶🔸تنظیماتی سوپرگروه🔸🔶
+🔱 #تنظیمات 👈 نمایش تنظیمات گروه
+🔱 #قفل_کردن [تبلیغات|اموجی|دستورات|انگلیسی|تگ|اعداد|لینک|فلود|اسپم|عربی|اعضا|rtl|استیکر|مخاطبین|سختگیرانه] 👈 ممنوع کردن موارد بالا در گروه
+🔱 #باز_کردن  [تبلیغات|اموجی|دستورات|انگلیسی|تگ|اعداد|لینک|فلود|اسپم|عربی|اعضا|rtl|استیکر|مخاطبین|سختگیرانه] 👈 ازاد کردن موارد بالا
 
-!modlist
-Moderators list
+*rtl: اگر این تنظیم قفل باشد کاربرانی که در اسم آنها کاراکتر های راست به چپ موجود باشد اخراج خواهند شد*
+🔱 #حساسیت_ضداسپم [عدد] 👈 تنظیم حساسیت ربات به تعداد اسپم
+🔱 #لیست_ممنوعیات 👈 نمایش وضعیت محتویات ممنوع
+🔱 #ممنوع_کردن [همه|صدا|گیف|عکس|فیلم] 👈 ممنوع کردن موارد بالا در گروه
+🔱 #ازاد_کردن [همه|صدا|گیف|عکس|فیلم] 👈 ازاد کردن موارد بالا
+🔱 #لیست_کاربران_بیصدا 👈 لیست کاربران محروم از چت
+🔱 #کاربر_بیصدا [ایدی|یوزرنیم] 👈 محروم یا غیرمحروم کردن یک کاربر از چت کردن
+🔱 #عمومی [روشن|خاموش] 👈 عمومی کردن گروه جهت عضو مردم دیگر
 
-!promote [username]
-Promote someone
 
-!demote [username]
-Demote someone
+⚪️▫️دیگر موارد▫️⚪️
+🔱 #تنظیم_قوانین <متن> 👈 تنظیم قوانین گروه
+🔱 #تنظیم_درباره <متن> 👈 تنظیم توضیحات گروه در پروفایل
+🔱 #ذخیره [کلیدواژه] [متن] 👈 ذخیره یک متن در کلیدواژه
+🔱 #بده [کلیدواژه] 👈 نمایش یک متن در کلیدواژه
+🔱 #پاکسازی [لیست_مدیران|قوانین|درباره|لیست_کاربران_بیصدا] 👈 ریست کردن موارد نامبرده
+🔱 #درمورد [یوزرنیم] 👈 نمایش اطلاعات یوزرنیم
+🔱 #گزارش 👈 نمایش گزارشات
+🔱 #پاککن 👈 پاک کردن پیامی که روی آن ریپلای شده است
 
-!kickme
-Will kick user
-
-!about
-Group description
-
-!setphoto
-Set and locks group photo
-
-!setname [name]
-Set group name
-
-!rules
-Group rules
-
-!id
-Return group id or user id
-
-!help
-Get commands list
-
-!lock [member|name|bots|leave] 
-Locks [member|name|bots|leaveing] 
-
-!unlock [member|name|bots|leave]
-Unlocks [member|name|bots|leaving]
-
-!set rules [text]
-Set [text] as rules
-
-!set about [text]
-Set [text] as about
-
-!settings
-Returns group settings
-
-!newlink
-Create/revoke your group link
-
-!link
-Returns group link
-
-!owner
-Returns group owner id
-
-!setowner [id]
-Will set id as owner
-
-!setflood [value]
-Set [value] as flood sensitivity
-
-!stats
-Simple message statistics
-
-!save [value] [text]
-Save [text] as [value]
-
-!get [value]
-Returns text of [value]
-
-!clean [modlist|rules|about]
-Will clear [modlist|rules|about] and set it to nil
-
-!res [username]
-Returns user id
-
-!log
-Will return group logs
-
-!banlist
-Will return group ban list
-
-» U can use both "/" and "!" 
-
-» Only mods, owner and admin can add bots in group
-
-» Only moderators and owner can use kick,ban,unban,newlink,link,setphoto,setname,lock,unlock,set rules,set about and settings commands
-
-» Only owner can use res,setowner,promote,demote and log commands
-
+کانال اخبار ربات : @TeleGold_Team
 ]]
   }
   serialize_to_file(config, './data/config.lua')
